@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:uzpay/enums.dart';
 import 'package:uzpay/objects.dart';
 import 'package:uzpay/uzpay.dart';
@@ -16,21 +17,36 @@ class PaymentScreen extends StatelessWidget {
       ),
     );
 
+    void pay() async {
+      try {
+        final response = await UzPay.doPayment(
+          context,
+          amount: 50,
+          paymentSystem: PaymentSystem.Payme,
+          paymentParams: paymentParams,
+          browserType: BrowserType.External,
+          externalBrowserMenuItem: ChromeSafariBrowserMenuItem(
+            id: 1,
+            label: "Dasturchi haqida",
+            onClick: (url, title) {
+              print("URL: $url");
+              print("TITLE: $title");
+            },
+          ),
+        );
+        print("RESPONSE: $response");
+      } catch (e) {
+        print("ERROR:$e");
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("UzPay Payment"),
       ),
       body: Center(
         child: ElevatedButton(
-          onPressed: () {
-            UzPay.doPayment(
-              context,
-              amount: 5000,
-              paymentSystem: PaymentSystem.Payme,
-              paymentParams: paymentParams,
-              browserType: BrowserType.External,
-            );
-          },
+          onPressed: pay,
           child: const Text("Pay Now"),
         ),
       ),

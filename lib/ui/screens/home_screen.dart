@@ -74,7 +74,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   } else if (state is PaymentFailure) {
                     return Text('Payment Failed: ${state.error}');
                   }
-
                   return ElevatedButton(
                     onPressed: () {
                       final senderCard = CardInfo(
